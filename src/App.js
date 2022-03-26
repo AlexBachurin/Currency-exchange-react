@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react'
 import getPercentageDiff from './helpers/getPercentageDiff';
+import addZeroToNum from './helpers/addZeroToNum';
 import SingleValute from './components/SingleValute';
 import ReactTooltip from 'react-tooltip';
 import { getYear, getDate, getMonth, subDays } from 'date-fns'
@@ -54,9 +55,8 @@ function App() {
       const month = getMonth(day) + 1;
       const date = getDate(day);
       const year = getYear(day);
-      console.log(day)
       try {
-        const res = await fetch(`https://www.cbr-xml-daily.ru/archive/${year}/0${month}/${date}/daily_json.js`);
+        const res = await fetch(`https://www.cbr-xml-daily.ru/archive/${year}/${addZeroToNum(month)}/${date}/daily_json.js`);
         if (res.ok) {
           const data = await res.json();
           const valutes = data.Valute;
@@ -64,7 +64,6 @@ function App() {
           const transformed = Object.entries(valutes).map(([name, obj]) => ({ name, ...obj }));
           //filter by neeeded valute name
           const filtered = transformed.filter(item => item.name === clickedValute);
-          console.log(filtered);
           //get value of this valute
           const value = filtered[0].Value;
           //name 
@@ -72,7 +71,7 @@ function App() {
           //create new object to store data
           const change = getPercentageDiff(filtered[0].Value, filtered[0].Previous);
           const newObj = {
-            date: `0${month}.${date}`,
+            date: `${addZeroToNum(month)}.${addZeroToNum(date)}`,
             value,
             name,
             change
@@ -116,6 +115,7 @@ function App() {
       setOldRates([]);
       fetchOldRates();
     }
+    //eslint-disable-next-line
   }, [clickedValute])
 
   return (

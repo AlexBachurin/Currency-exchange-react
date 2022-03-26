@@ -14,6 +14,7 @@ const SingleValute = ({ code, curValue, FullName, change, handleCurrencyClick, c
         if (clickedValute !== code) {
             setShow(false);
         }
+        //eslint-disable-next-line
     }, [clickedValute])
     return (
         <>
