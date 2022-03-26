@@ -1,23 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { getYear, getDate, getMonth, subDays } from 'date-fns'
 
-const SingleValute = ({ code, curValue, FullName, change, handleCurrencyClick, clickedValute }) => {
+const SingleValute = ({ code, curValue, FullName, change, handleCurrencyClick, clickedValute, oldRates, loading }) => {
     //state for display
     const [show, setShow] = useState(false);
 
     const changeVisibility = () => {
         setShow(!show);
     }
-    const today = getDate(new Date());
-    // const day10 = subDays(new Date(), 10);
-    // console.log(day10)
-    // const month = getMonth(day10) + 1;
-    // console.log(month)
-    // const date = getDate(day10);
-    // console.log(date);
-    // const year = getYear(day10);
-    // console.log(year)
     return (
         <>
             <Wrapper onClick={() => {
@@ -28,26 +18,20 @@ const SingleValute = ({ code, curValue, FullName, change, handleCurrencyClick, c
                 <p>{curValue}</p>
                 <p>{change}%</p>
             </Wrapper>
+
             {/* conditional rendering if we clicked valute display it */}
-            {show ? <InnerWrapper>
-                <li className='info'>
-                    <p>{today}</p>
-                    <p>{code}</p>
-                    <p>{curValue}</p>
-                    <p>{change}%</p>
-                </li>
-                <li className='info'>
-                    <p>{today}</p>
-                    <p>{code}</p>
-                    <p>{curValue}</p>
-                    <p>{change}%</p>
-                </li>
-                <li className='info'>
-                    <p>{today}</p>
-                    <p>{code}</p>
-                    <p>{curValue}</p>
-                    <p>{change}%</p>
-                </li>
+            {loading && clickedValute === code ? <div>Loading...</div> : null}
+            {clickedValute === code && !loading ? <InnerWrapper className={show ? `show` : `hide`}>
+                {oldRates.map(item => {
+                    const { date, name, value } = item;
+                    return (
+                        <li className='info'>
+                            <p>{date}</p>
+                            <p>{name}</p>
+                            <p>{value}</p>
+                        </li>
+                    )
+                })}
             </InnerWrapper> :
                 null}
         </>
@@ -81,6 +65,7 @@ const InnerWrapper = styled.ul`
         cursor: pointer;
         text-align: center;
     }
+    
 
 `
 
