@@ -62,7 +62,7 @@ function App() {
           </li>
           {currencyList.map((item) => {
             return (
-              <SingleValute key={item.id} handleCurrencyClick={handleCurrencyClick} {...item} />
+              <SingleValute key={item.id} handleCurrencyClick={handleCurrencyClick} {...item} clickedValute={clickedValute} />
             )
           })}
         </ul>
