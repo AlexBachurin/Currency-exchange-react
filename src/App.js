@@ -7,13 +7,6 @@ const url = 'https://www.cbr-xml-daily.ru/daily_json.js';
 function App() {
   //state for daily currencies list
   const [currencyList, setCurrencyList] = useState([]);
-  //state for tooltip
-  // const [tooltip, setTooltip] = useState('')
-  // //hover over li element
-  // const handleHover = (name) => {
-  //   setTooltip(name);
-  //   console.log('mouse over')
-  // }
   //get exchange rate data
   const getRates = async (url) => {
     try {
@@ -45,6 +38,11 @@ function App() {
   useEffect(() => {
     getRates(url)
   }, [])
+
+  //useEffect for tooltips
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  }, [currencyList])
   return (
     <main>
       <Wrapper>
@@ -62,7 +60,10 @@ function App() {
           })}
         </ul>
 
-        <ReactTooltip id='showTool'>
+        <ReactTooltip
+          id='showTool'
+          type='info'
+        >
         </ReactTooltip>
       </Wrapper>
     </main>
@@ -85,6 +86,7 @@ const Wrapper = styled.section`
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #000;
+      padding: 0 10px;
     }
 
 `

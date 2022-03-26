@@ -1,19 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
+import { getYear, getDate, getMonth, subDays } from 'date-fns'
 
-const SingleValute = ({ id, code, curValue, FullName, change, handleHover }) => {
+const SingleValute = ({ code, curValue, FullName, change }) => {
 
-
+    const day10 = subDays(new Date(), 10);
+    console.log(day10)
+    const month = getMonth(day10) + 1;
+    console.log(month)
+    const date = getDate(day10);
+    console.log(date);
+    const year = getYear(day10);
+    console.log(year)
     return (
         <Wrapper data-tip={FullName} data-for='showTool'>
             <p>{code}</p>
-            {/* <p>{prevValue}</p> */}
             <p>{curValue}</p>
             <p>{change}%</p>
-            {/* <Tooltip /> */}
-            {/* <ReactTooltip id={id}>
-               
-            </ReactTooltip> */}
         </Wrapper>
 
     )
@@ -24,7 +27,9 @@ const Wrapper = styled.li`
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #000;
+    padding: 0 10px;
     cursor: pointer;
+    text-align: center;
     :hover {
         background: gray;
     }
