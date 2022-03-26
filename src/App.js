@@ -5,6 +5,7 @@ import SingleValute from './components/SingleValute';
 import ReactTooltip from 'react-tooltip';
 import { getYear, getDate, getMonth, subDays } from 'date-fns'
 const url = 'https://www.cbr-xml-daily.ru/daily_json.js';
+const base = 'RUB'
 function App() {
   //state for daily currencies list
   const [currencyList, setCurrencyList] = useState([]);
@@ -116,10 +117,12 @@ function App() {
       fetchOldRates();
     }
   }, [clickedValute])
+
   return (
     <main>
       <Wrapper>
         <h1 className='title'>Currency exchange rates</h1>
+        <h2 className='subtitle'>for {base}</h2>
         <ul className='valutes-list'>
           <li className='single-valute'>
             <p>Name</p>
@@ -148,18 +151,25 @@ const Wrapper = styled.section`
     height: 100vh;
     max-width: 600px;
     margin: 0 auto;
-    .title {
-      text-align: center;
+    padding: 40px 0;
+    text-align: center;
+    .subtitle {
+      padding-top: 10px;
     }
     .valutes-list {
       padding: 0;
+      background: #cee8f0;
+      border-radius: 10px;
     }
     .single-valute {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #000;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
       padding: 0 10px;
+      text-transform: capitalize;
+      font-size: 18px;
+      font-weight: bold;
     }
 
 `

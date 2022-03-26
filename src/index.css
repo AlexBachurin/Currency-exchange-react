@@ -18,6 +18,11 @@ h4,
 h5 {
   margin: 0;
 }
+main {
+  /* background: #ccccff;
+  min-height: 100vh;
+  overflow: hidden; */
+}
 ul {
   list-style-type: none;
 }
@@ -28,5 +33,18 @@ ul {
   display: block;
 }
 .active {
-  background: gray;
+  background: #7997a1;
+}
+.underline {
+  width: 120px;
+  height: 5px;
+  background: #000;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.positive {
+  color: #007300;
+}
+.negative {
+  color: #b30000;
 }
