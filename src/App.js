@@ -1,25 +1,86 @@
-import logo from './logo.svg';
-import './App.css';
-
+import styled from 'styled-components';
+import React, { useEffect, useState } from 'react'
+import getPercentageDiff from './helpers/getPercentageDiff';
+const url = 'https://www.cbr-xml-daily.ru/daily_json.js';
 function App() {
+  //state for daily currencies list
+  const [currencyList, setCurrencyList] = useState([]);
+  //get exchange rate data
+  const getRates = async (url) => {
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      const valutes = data.Valute;
+      //transform to array of objects
+      const transformed = Object.entries(valutes).map(([name, obj]) => ({ name, ...obj }));
+      //get needed values in final array
+      const final = transformed.map(item => {
+        const { id, name, Previous, Value, Name } = item;
+        const change = getPercentageDiff(Value, Previous);
+        return {
+          id,
+          code: name,
+          prevValue: Previous,
+          curValue: Value,
+          FullName: Name,
+          change
+        }
+      })
+      console.log(final)
+      setCurrencyList(final)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getRates(url)
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <Wrapper>
+        <h1 className='title'>Currency exchange rates</h1>
+        <ul className='valutes-list'>
+          <li className='single-valute'>
+            <p>Name</p>
+            <p>Current value</p>
+            <p>change %</p>
+          </li>
+          {currencyList.map(({ id, code, prevValue, curValue, FullName, change }) => {
+            return (
+              <li className='single-valute' key={id}>
+                <p>{code}</p>
+                {/* <p>{prevValue}</p> */}
+                <p>{curValue}</p>
+                <p>{change}%</p>
+              </li>
+            )
+          })}
+        </ul>
+      </Wrapper>
+    </main>
   );
 }
+
+const Wrapper = styled.section`
+    width: 90vw;
+    height: 100vh;
+    max-width: 600px;
+    margin: 0 auto;
+    .title {
+      text-align: center;
+    }
+    .valutes-list {
+      padding: 0;
+    }
+    .single-valute {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #000;
+    }
+
+`
 
 export default App;
