@@ -56,7 +56,7 @@ function App() {
       const date = getDate(day);
       const year = getYear(day);
       try {
-        const res = await fetch(`https://www.cbr-xml-daily.ru/archive/${year}/${addZeroToNum(month)}/${date}/daily_json.js`);
+        const res = await fetch(`https://www.cbr-xml-daily.ru/archive/${year}/${addZeroToNum(month)}/${addZeroToNum(date)}/daily_json.js`);
         if (res.ok) {
           const data = await res.json();
           const valutes = data.Valute;
