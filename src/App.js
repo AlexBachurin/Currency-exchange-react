@@ -1,13 +1,21 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react'
 import getPercentageDiff from './helpers/getPercentageDiff';
+import SingleValute from './components/SingleValute';
+import ReactTooltip from 'react-tooltip';
 const url = 'https://www.cbr-xml-daily.ru/daily_json.js';
 function App() {
   //state for daily currencies list
   const [currencyList, setCurrencyList] = useState([]);
+  //state for tooltip
+  // const [tooltip, setTooltip] = useState('')
+  // //hover over li element
+  // const handleHover = (name) => {
+  //   setTooltip(name);
+  //   console.log('mouse over')
+  // }
   //get exchange rate data
   const getRates = async (url) => {
-
     try {
       const res = await fetch(url);
       const data = await res.json();
@@ -47,17 +55,15 @@ function App() {
             <p>Current value</p>
             <p>change %</p>
           </li>
-          {currencyList.map(({ id, code, prevValue, curValue, FullName, change }) => {
+          {currencyList.map((item) => {
             return (
-              <li className='single-valute' key={id}>
-                <p>{code}</p>
-                {/* <p>{prevValue}</p> */}
-                <p>{curValue}</p>
-                <p>{change}%</p>
-              </li>
+              <SingleValute key={item.id} {...item} />
             )
           })}
         </ul>
+
+        <ReactTooltip id='showTool'>
+        </ReactTooltip>
       </Wrapper>
     </main>
   );
