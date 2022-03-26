@@ -27,3 +27,6 @@ ul {
 .show {
   display: block;
 }
+.active {
+  background: gray;
+}

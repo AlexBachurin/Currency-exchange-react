@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Loading from './Loading';
 const SingleValute = ({ code, curValue, FullName, change, handleCurrencyClick, clickedValute, oldRates, loading }) => {
@@ -8,21 +8,45 @@ const SingleValute = ({ code, curValue, FullName, change, handleCurrencyClick, c
     const changeVisibility = () => {
         setShow(!show);
     }
+
+    //useEffect to set show to false if we clicked in another li
+    useEffect(() => {
+        if (clickedValute !== code) {
+            setShow(false);
+        }
+    }, [clickedValute])
     return (
         <>
             <Wrapper onClick={() => {
                 handleCurrencyClick(code);
                 changeVisibility();
-            }} data-tip={FullName} data-for='showTool'>
+            }} data-tip={FullName} data-for='showTool' className={clickedValute === code && show ? 'active' : null}>
                 <p>{code}</p>
                 <p>{curValue}</p>
                 <p>{change}%</p>
             </Wrapper>
 
             {/* conditional rendering if we clicked valute display it */}
-            {loading && clickedValute === code ? <Loading /> : null}
+            {loading && clickedValute === code ? <Loading /> : <InnerWrapper className={show && clickedValute === code ? `show` : `hide`}>
+                <h2>info for past 10 days</h2>
+                <li className='info'>
+                    <p>date</p>
+                    <p>value</p>
+                    <p>change</p>
+                </li>
+                {oldRates.map(item => {
+                    const { date, value, change } = item;
+                    return (
+                        <li key={date + value + change} className='info'>
+                            <p>{date}</p>
+                            <p>{value}</p>
+                            <p>{change}%</p>
+                        </li>
+                    )
+                })}
+            </InnerWrapper>}
 
-            {clickedValute === code && !loading ? <InnerWrapper className={show ? `show` : `hide`}>
+            {/* {clickedValute === code && !loading ? <InnerWrapper className={show && clickedValute === code ? `show` : `hide`}>
                 <h2>info for past 10 days</h2>
                 <li className='info'>
                     <p>date</p>
@@ -40,7 +64,7 @@ const SingleValute = ({ code, curValue, FullName, change, handleCurrencyClick, c
                     )
                 })}
             </InnerWrapper> :
-                null}
+                null} */}
         </>
     )
 }
@@ -69,7 +93,6 @@ const InnerWrapper = styled.ul`
         align-items: center;
         border-bottom: 1px solid #000;
         padding: 0 10px;
-        cursor: pointer;
         text-align: center;
     }
     
