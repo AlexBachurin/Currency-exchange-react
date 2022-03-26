@@ -7,6 +7,13 @@ const url = 'https://www.cbr-xml-daily.ru/daily_json.js';
 function App() {
   //state for daily currencies list
   const [currencyList, setCurrencyList] = useState([]);
+  //state for clicked currency name to display 10-day data
+  const [clickedValute, setClickedValute] = useState('');
+
+  //clicking on currency tab handler
+  const handleCurrencyClick = (name) => {
+    setClickedValute(name);
+  }
   //get exchange rate data
   const getRates = async (url) => {
     try {
@@ -55,7 +62,7 @@ function App() {
           </li>
           {currencyList.map((item) => {
             return (
-              <SingleValute key={item.id} {...item} />
+              <SingleValute key={item.id} handleCurrencyClick={handleCurrencyClick} {...item} />
             )
           })}
         </ul>
