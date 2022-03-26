@@ -69,10 +69,12 @@ function App() {
           //name 
           const name = filtered[0].name;
           //create new object to store data
+          const change = getPercentageDiff(filtered[0].Value, filtered[0].Previous);
           const newObj = {
             date: `0${month}.${date}`,
             value,
-            name
+            name,
+            change
           }
           setOldRates(oldList => {
             return [...oldList, newObj]

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-
+import Loading from './Loading';
 const SingleValute = ({ code, curValue, FullName, change, handleCurrencyClick, clickedValute, oldRates, loading }) => {
     //state for display
     const [show, setShow] = useState(false);
@@ -20,15 +20,22 @@ const SingleValute = ({ code, curValue, FullName, change, handleCurrencyClick, c
             </Wrapper>
 
             {/* conditional rendering if we clicked valute display it */}
-            {loading && clickedValute === code ? <div>Loading...</div> : null}
+            {loading && clickedValute === code ? <Loading /> : null}
+
             {clickedValute === code && !loading ? <InnerWrapper className={show ? `show` : `hide`}>
+                <h2>info for past 10 days</h2>
+                <li className='info'>
+                    <p>date</p>
+                    <p>value</p>
+                    <p>change</p>
+                </li>
                 {oldRates.map(item => {
-                    const { date, name, value } = item;
+                    const { date, value, change } = item;
                     return (
-                        <li className='info'>
+                        <li key={date + value + change} className='info'>
                             <p>{date}</p>
-                            <p>{name}</p>
                             <p>{value}</p>
+                            <p>{change}%</p>
                         </li>
                     )
                 })}
